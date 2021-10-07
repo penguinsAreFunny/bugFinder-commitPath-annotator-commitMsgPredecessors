@@ -3,6 +3,7 @@ import {BUGFINDER_COMMITPATH_ANNOTATOR_COMMITMSGPREDECESSORS_TYPES} from "./TYPE
 import {Annotator, LocalityMap} from "bugfinder-framework";
 import {CommitPath, PredecessorsUnique} from "bugfinder-localityrecorder-commitpath";
 import {Logger} from "ts-log";
+import _ from "underscore"
 
 @injectable()
 export class CommitPathsPredecessorsAnnotator implements Annotator<CommitPath, number> {
