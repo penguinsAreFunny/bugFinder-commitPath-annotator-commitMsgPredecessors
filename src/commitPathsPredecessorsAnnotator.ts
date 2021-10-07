@@ -16,6 +16,9 @@ export class CommitPathsPredecessorsAnnotator implements Annotator<CommitPath, n
     @inject(BUGFINDER_COMMITPATH_ANNOTATOR_COMMITMSGPREDECESSORS_TYPES.upToN)
     upToN: boolean
 
+    @inject(BUGFINDER_COMMITPATH_ANNOTATOR_COMMITMSGPREDECESSORS_TYPES.uniqueMode)
+    uniqueMode: boolean
+
     @optional() @inject(BUGFINDER_COMMITPATH_ANNOTATOR_COMMITMSGPREDECESSORS_TYPES.logger)
     logger: Logger
 
@@ -28,6 +31,10 @@ export class CommitPathsPredecessorsAnnotator implements Annotator<CommitPath, n
     annotate(localitiesToAnnotate: CommitPath[], allLocalities: CommitPath[]): LocalityMap<CommitPath, number> {
         const map = new LocalityMap<CommitPath, number>()
 
+        if (this.uniqueMode) {
+            CommitPath.
+        }
+
         const nPredecessorsArray: Array<CommitPath[]> = CommitPath
             .getNPredecessorsArray(localitiesToAnnotate, this.n, this.upToN, allLocalities)
 
@@ -39,11 +46,8 @@ export class CommitPathsPredecessorsAnnotator implements Annotator<CommitPath, n
             if (nPredecessors == null)
                 continue
 
-            const localitiesToConsider = [...nPredecessors, loc]
-
-
             // annotations of nPredecessors
-            const annotations = this.commitPathAnnotator.annotate(localitiesToConsider)
+            const annotations = this.commitPathAnnotator.annotate(nPredecessors)
 
             // sum of all annotations of the nPredecessors
             const annotation = annotations.toArray()

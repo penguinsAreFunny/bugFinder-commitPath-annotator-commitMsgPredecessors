@@ -123,7 +123,7 @@ var CommitPath = /** @class */ (function () {
      * @param upToN
      * @param allLocalities
      */
-    CommitPath.getNPredecessorsArray = function (localities, n, upToN, allLocalities) {
+    CommitPath.getNPredecessorsMap = function (localities, n, upToN, allLocalities) {
         var _a, _b;
         var preds = [];
         var locsWithExactlyNPreds = 0;
