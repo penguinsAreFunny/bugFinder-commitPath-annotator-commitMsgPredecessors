@@ -8,6 +8,7 @@
  * @constructor
  */
 import { Commit } from "bugfinder-localityrecorder-commit";
+import { CommitPath } from "bugfinder-localityrecorder-commitpath";
 export declare const FILTER_CORRECTIVE_MESSAGE: (locality: Commit) => boolean;
 /**
  * Commits containing more than two not test files are discarded.
@@ -36,4 +37,4 @@ export declare const FILTER_NO_MERGE_COMMIT: (locality: Commit) => boolean;
  * @param testFileMatcher
  * @constructor
  */
-export declare const FILTER_NO_TEST_FILE: (commitPath: any, testFileMatcher: RegExp) => boolean;
+export declare const FILTER_NO_TEST_FILE: (commitPath: CommitPath, testFileMatcher: RegExp) => boolean;
