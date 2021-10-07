@@ -4,7 +4,6 @@ import {CommitPath, PredecessorsUnique} from "bugfinder-localityrecorder-commitp
 import {BUGFINDER_COMMITPATH_ANNOTATOR_COMMITMSGPREDECESSORS_TYPES} from "./TYPES";
 import _ from 'underscore';
 import {Logger} from "ts-log";
-import {Commit} from "bugfinder-localityrecorder-commit";
 
 @injectable()
 export class CommitPathsPredecessorsAnnotator implements Annotator<CommitPath, number> {
