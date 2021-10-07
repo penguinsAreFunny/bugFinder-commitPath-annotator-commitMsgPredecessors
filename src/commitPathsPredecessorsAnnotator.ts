@@ -1,9 +1,10 @@
 import {inject, injectable, optional} from "inversify";
 import {Annotator, LocalityMap} from "bugfinder-framework";
-import {CommitPath} from "bugfinder-localityrecorder-commitpath";
+import {CommitPath, PredecessorsUnique} from "bugfinder-localityrecorder-commitpath";
 import {BUGFINDER_COMMITPATH_ANNOTATOR_COMMITMSGPREDECESSORS_TYPES} from "./TYPES";
 import _ from 'underscore';
 import {Logger} from "ts-log";
+import {Commit} from "bugfinder-localityrecorder-commit";
 
 @injectable()
 export class CommitPathsPredecessorsAnnotator implements Annotator<CommitPath, number> {
@@ -32,15 +33,15 @@ export class CommitPathsPredecessorsAnnotator implements Annotator<CommitPath, n
         const map = new LocalityMap<CommitPath, number>()
 
         if (this.uniqueMode) {
-            CommitPath.
+            CommitPath.setPredecessorDelegation(new PredecessorsUnique(this.logger))
         }
 
-        const nPredecessorsArray: Array<CommitPath[]> = CommitPath
-            .getNPredecessorsArray(localitiesToAnnotate, this.n, this.upToN, allLocalities)
+        const nPredecessorsMap: LocalityMap<CommitPath, CommitPath[]> =
+            CommitPath.getNPredecessorsMap(localitiesToAnnotate, this.n, this.upToN, allLocalities)
 
         for (let i = 0; i < localitiesToAnnotate.length; i++) {
             const loc = localitiesToAnnotate[i]
-            const nPredecessors = nPredecessorsArray[i]
+            const nPredecessors = nPredecessorsMap.getVal(loc)
 
             // upToN == false => locality has less than n predecessors
             if (nPredecessors == null)

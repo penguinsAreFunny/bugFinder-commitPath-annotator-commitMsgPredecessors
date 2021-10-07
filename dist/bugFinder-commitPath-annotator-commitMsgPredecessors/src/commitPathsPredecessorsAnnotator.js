@@ -8,31 +8,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __read = (this && this.__read) || function (o, n) {
-    var m = typeof Symbol === "function" && o[Symbol.iterator];
-    if (!m) return o;
-    var i = m.call(o), r, ar = [], e;
-    try {
-        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
-    }
-    catch (error) { e = { error: error }; }
-    finally {
-        try {
-            if (r && !r.done && (m = i["return"])) m.call(i);
-        }
-        finally { if (e) throw e.error; }
-    }
-    return ar;
-};
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -55,6 +30,10 @@ var CommitPathsPredecessorsAnnotator = /** @class */ (function () {
     CommitPathsPredecessorsAnnotator.prototype.annotate = function (localitiesToAnnotate, allLocalities) {
         var _a;
         var map = new bugfinder_framework_1.LocalityMap();
+        if (this.uniqueMode) {
+            bugfinder_localityrecorder_commitpath_1.CommitPath.
+            ;
+        }
         var nPredecessorsArray = bugfinder_localityrecorder_commitpath_1.CommitPath
             .getNPredecessorsArray(localitiesToAnnotate, this.n, this.upToN, allLocalities);
         for (var i = 0; i < localitiesToAnnotate.length; i++) {
@@ -63,9 +42,8 @@ var CommitPathsPredecessorsAnnotator = /** @class */ (function () {
             // upToN == false => locality has less than n predecessors
             if (nPredecessors == null)
                 continue;
-            var localitiesToConsider = __spreadArray(__spreadArray([], __read(nPredecessors), false), [loc], false);
             // annotations of nPredecessors
-            var annotations = this.commitPathAnnotator.annotate(localitiesToConsider);
+            var annotations = this.commitPathAnnotator.annotate(nPredecessors);
             // sum of all annotations of the nPredecessors
             var annotation = annotations.toArray()
                 .map(function (el) {
@@ -97,6 +75,10 @@ var CommitPathsPredecessorsAnnotator = /** @class */ (function () {
         __metadata("design:type", Boolean)
     ], CommitPathsPredecessorsAnnotator.prototype, "upToN", void 0);
     __decorate([
+        (0, inversify_1.inject)(TYPES_1.BUGFINDER_COMMITPATH_ANNOTATOR_COMMITMSGPREDECESSORS_TYPES.uniqueMode),
+        __metadata("design:type", Boolean)
+    ], CommitPathsPredecessorsAnnotator.prototype, "uniqueMode", void 0);
+    __decorate([
         (0, inversify_1.optional)(),
         (0, inversify_1.inject)(TYPES_1.BUGFINDER_COMMITPATH_ANNOTATOR_COMMITMSGPREDECESSORS_TYPES.logger),
         __metadata("design:type", Object)
@@ -107,4 +89,4 @@ var CommitPathsPredecessorsAnnotator = /** @class */ (function () {
     return CommitPathsPredecessorsAnnotator;
 }());
 exports.CommitPathsPredecessorsAnnotator = CommitPathsPredecessorsAnnotator;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY29tbWl0UGF0aHNQcmVkZWNlc3NvcnNBbm5vdGF0b3IuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi9zcmMvY29tbWl0UGF0aHNQcmVkZWNlc3NvcnNBbm5vdGF0b3IudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUFBLHVDQUF1RDtBQUN2RCwyREFBMkQ7QUFDM0QsK0ZBQWlFO0FBQ2pFLGlDQUFtRjtBQUNuRiwwREFBMkI7QUFJM0I7SUFBQTtJQThEQSxDQUFDO0lBakRHOzs7OztPQUtHO0lBQ0gsbURBQVEsR0FBUixVQUFTLG9CQUFrQyxFQUFFLGFBQTJCOztRQUNwRSxJQUFNLEdBQUcsR0FBRyxJQUFJLGlDQUFXLEVBQXNCLENBQUE7UUFFakQsSUFBTSxrQkFBa0IsR0FBd0Isa0RBQVU7YUFDckQscUJBQXFCLENBQUMsb0JBQW9CLEVBQUUsSUFBSSxDQUFDLENBQUMsRUFBRSxJQUFJLENBQUMsS0FBSyxFQUFFLGFBQWEsQ0FBQyxDQUFBO1FBRW5GLEtBQUssSUFBSSxDQUFDLEdBQUcsQ0FBQyxFQUFFLENBQUMsR0FBRyxvQkFBb0IsQ0FBQyxNQUFNLEVBQUUsQ0FBQyxFQUFFLEVBQUU7WUFDbEQsSUFBTSxHQUFHLEdBQUcsb0JBQW9CLENBQUMsQ0FBQyxDQUFDLENBQUE7WUFDbkMsSUFBTSxhQUFhLEdBQUcsa0JBQWtCLENBQUMsQ0FBQyxDQUFDLENBQUE7WUFFM0MsMERBQTBEO1lBQzFELElBQUksYUFBYSxJQUFJLElBQUk7Z0JBQ3JCLFNBQVE7WUFFWixJQUFNLG9CQUFvQiwwQ0FBTyxhQUFhLFlBQUUsR0FBRyxTQUFDLENBQUE7WUFHcEQsK0JBQStCO1lBQy9CLElBQU0sV0FBVyxHQUFHLElBQUksQ0FBQyxtQkFBbUIsQ0FBQyxRQUFRLENBQUMsb0JBQW9CLENBQUMsQ0FBQTtZQUUzRSw4Q0FBOEM7WUFDOUMsSUFBTSxVQUFVLEdBQUcsV0FBVyxDQUFDLE9BQU8sRUFBRTtpQkFDbkMsR0FBRyxDQUFDLFVBQUEsRUFBRTtnQkFDSCxPQUFPLEVBQUUsQ0FBQyxHQUFHLENBQUE7WUFDakIsQ0FBQyxDQUFDO2lCQUNELE1BQU0sQ0FBQyxVQUFDLEdBQUcsRUFBRSxHQUFHO2dCQUNiLE9BQU8sR0FBRyxHQUFHLEdBQUcsQ0FBQTtZQUNwQixDQUFDLENBQUMsQ0FBQTtZQUVOLEdBQUcsQ0FBQyxHQUFHLENBQUMsR0FBRyxFQUFFLFVBQVUsQ0FBQyxDQUFBO1NBQzNCO1FBRUQsSUFBTSxVQUFVLEdBQUcsR0FBRyxDQUFDLE9BQU8sRUFBRSxDQUFDLEdBQUcsQ0FBQyxVQUFBLEVBQUU7WUFDbkMsT0FBTyxFQUFFLENBQUMsR0FBRyxDQUFBO1FBQ2pCLENBQUMsQ0FBQyxDQUFBO1FBRUYsTUFBQSxJQUFJLENBQUMsTUFBTSwwQ0FBRSxJQUFJLENBQUMsb0JBQW9CLEVBQUUsb0JBQUMsQ0FBQyxPQUFPLENBQUMsVUFBVSxFQUFFLFVBQUMsR0FBRztZQUM5RCxPQUFPLEdBQUcsQ0FBQTtRQUNkLENBQUMsQ0FBQyxDQUFDLENBQUE7UUFFSCxPQUFPLEdBQUcsQ0FBQztJQUNmLENBQUM7SUExREQ7UUFEQyxJQUFBLGtCQUFNLEVBQUMsa0VBQTBELENBQUMsbUJBQW1CLENBQUM7O2lGQUNyQztJQUdsRDtRQURDLElBQUEsa0JBQU0sRUFBQyxrRUFBMEQsQ0FBQyxDQUFDLENBQUM7OytEQUM1RDtJQUdUO1FBREMsSUFBQSxrQkFBTSxFQUFDLGtFQUEwRCxDQUFDLEtBQUssQ0FBQzs7bUVBQzNEO0lBR2Q7UUFEQyxJQUFBLG9CQUFRLEdBQUU7UUFBRSxJQUFBLGtCQUFNLEVBQUMsa0VBQTBELENBQUMsTUFBTSxDQUFDOztvRUFDeEU7SUFYTCxnQ0FBZ0M7UUFENUMsSUFBQSxzQkFBVSxHQUFFO09BQ0EsZ0NBQWdDLENBOEQ1QztJQUFELHVDQUFDO0NBQUEsQUE5REQsSUE4REM7QUE5RFksNEVBQWdDIn0=
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY29tbWl0UGF0aHNQcmVkZWNlc3NvcnNBbm5vdGF0b3IuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi9zcmMvY29tbWl0UGF0aHNQcmVkZWNlc3NvcnNBbm5vdGF0b3IudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7O0FBQUEsdUNBQXVEO0FBQ3ZELDJEQUEyRDtBQUMzRCwrRkFBaUU7QUFDakUsaUNBQW1GO0FBQ25GLDBEQUEyQjtBQUkzQjtJQUFBO0lBa0VBLENBQUM7SUFsREc7Ozs7O09BS0c7SUFDSCxtREFBUSxHQUFSLFVBQVMsb0JBQWtDLEVBQUUsYUFBMkI7O1FBQ3BFLElBQU0sR0FBRyxHQUFHLElBQUksaUNBQVcsRUFBc0IsQ0FBQTtRQUVqRCxJQUFJLElBQUksQ0FBQyxVQUFVLEVBQUU7WUFDakIsa0RBQVU7Z0JBQ2QsQUFEZSxKQUFBLENBQUE7U0FDZDtRQUVELElBQU0sa0JBQWtCLEdBQXdCLGtEQUFVO2FBQ3JELHFCQUFxQixDQUFDLG9CQUFvQixFQUFFLElBQUksQ0FBQyxDQUFDLEVBQUUsSUFBSSxDQUFDLEtBQUssRUFBRSxhQUFhLENBQUMsQ0FBQTtRQUVuRixLQUFLLElBQUksQ0FBQyxHQUFHLENBQUMsRUFBRSxDQUFDLEdBQUcsb0JBQW9CLENBQUMsTUFBTSxFQUFFLENBQUMsRUFBRSxFQUFFO1lBQ2xELElBQU0sR0FBRyxHQUFHLG9CQUFvQixDQUFDLENBQUMsQ0FBQyxDQUFBO1lBQ25DLElBQU0sYUFBYSxHQUFHLGtCQUFrQixDQUFDLENBQUMsQ0FBQyxDQUFBO1lBRTNDLDBEQUEwRDtZQUMxRCxJQUFJLGFBQWEsSUFBSSxJQUFJO2dCQUNyQixTQUFRO1lBRVosK0JBQStCO1lBQy9CLElBQU0sV0FBVyxHQUFHLElBQUksQ0FBQyxtQkFBbUIsQ0FBQyxRQUFRLENBQUMsYUFBYSxDQUFDLENBQUE7WUFFcEUsOENBQThDO1lBQzlDLElBQU0sVUFBVSxHQUFHLFdBQVcsQ0FBQyxPQUFPLEVBQUU7aUJBQ25DLEdBQUcsQ0FBQyxVQUFBLEVBQUU7Z0JBQ0gsT0FBTyxFQUFFLENBQUMsR0FBRyxDQUFBO1lBQ2pCLENBQUMsQ0FBQztpQkFDRCxNQUFNLENBQUMsVUFBQyxHQUFHLEVBQUUsR0FBRztnQkFDYixPQUFPLEdBQUcsR0FBRyxHQUFHLENBQUE7WUFDcEIsQ0FBQyxDQUFDLENBQUE7WUFFTixHQUFHLENBQUMsR0FBRyxDQUFDLEdBQUcsRUFBRSxVQUFVLENBQUMsQ0FBQTtTQUMzQjtRQUVELElBQU0sVUFBVSxHQUFHLEdBQUcsQ0FBQyxPQUFPLEVBQUUsQ0FBQyxHQUFHLENBQUMsVUFBQSxFQUFFO1lBQ25DLE9BQU8sRUFBRSxDQUFDLEdBQUcsQ0FBQTtRQUNqQixDQUFDLENBQUMsQ0FBQTtRQUVGLE1BQUEsSUFBSSxDQUFDLE1BQU0sMENBQUUsSUFBSSxDQUFDLG9CQUFvQixFQUFFLG9CQUFDLENBQUMsT0FBTyxDQUFDLFVBQVUsRUFBRSxVQUFDLEdBQUc7WUFDOUQsT0FBTyxHQUFHLENBQUE7UUFDZCxDQUFDLENBQUMsQ0FBQyxDQUFBO1FBRUgsT0FBTyxHQUFHLENBQUM7SUFDZixDQUFDO0lBOUREO1FBREMsSUFBQSxrQkFBTSxFQUFDLGtFQUEwRCxDQUFDLG1CQUFtQixDQUFDOztpRkFDckM7SUFHbEQ7UUFEQyxJQUFBLGtCQUFNLEVBQUMsa0VBQTBELENBQUMsQ0FBQyxDQUFDOzsrREFDNUQ7SUFHVDtRQURDLElBQUEsa0JBQU0sRUFBQyxrRUFBMEQsQ0FBQyxLQUFLLENBQUM7O21FQUMzRDtJQUdkO1FBREMsSUFBQSxrQkFBTSxFQUFDLGtFQUEwRCxDQUFDLFVBQVUsQ0FBQzs7d0VBQzNEO0lBR25CO1FBREMsSUFBQSxvQkFBUSxHQUFFO1FBQUUsSUFBQSxrQkFBTSxFQUFDLGtFQUEwRCxDQUFDLE1BQU0sQ0FBQzs7b0VBQ3hFO0lBZEwsZ0NBQWdDO1FBRDVDLElBQUEsc0JBQVUsR0FBRTtPQUNBLGdDQUFnQyxDQWtFNUM7SUFBRCx1Q0FBQztDQUFBLEFBbEVELElBa0VDO0FBbEVZLDRFQUFnQyJ9

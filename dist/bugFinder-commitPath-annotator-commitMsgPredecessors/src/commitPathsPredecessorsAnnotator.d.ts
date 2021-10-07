@@ -5,6 +5,7 @@ export declare class CommitPathsPredecessorsAnnotator implements Annotator<Commi
     commitPathAnnotator: Annotator<CommitPath, number>;
     n: number;
     upToN: boolean;
+    uniqueMode: boolean;
     logger: Logger;
     /**
      * If upToN ist true the return value does not annotate localities which have less than n predecessors

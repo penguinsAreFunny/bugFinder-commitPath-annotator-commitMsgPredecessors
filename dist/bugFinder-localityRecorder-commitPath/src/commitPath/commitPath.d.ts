@@ -1,8 +1,11 @@
-import { Locality } from "bugfinder-framework";
+import { Locality, LocalityMap } from "bugfinder-framework";
 import { Commit, GitFile } from "bugfinder-localityrecorder-commit";
 import { Logger } from "ts-log";
+import { PredecessorDelegation } from "./PredecessorDelegation";
 export declare class CommitPath implements Locality {
-    static logger?: Logger;
+    static _logger?: Logger;
+    static set logger(logger: Logger);
+    static get logger(): Logger;
     /**
      * Map of Commit.key to Commit. Used to normalize CommitPaths and reduce redundancy
      * It is not a common use case to change anything in this map!
@@ -14,8 +17,55 @@ export declare class CommitPath implements Locality {
      * to normalize CommitPaths to Commits and the Paths of CommitPaths
      */
     static _commits: Commit[];
-    private static orderedLocalities;
-    private static minOrder;
+    /**
+     * Delegation to calculate predecessors with different strategies
+     * @private
+     */
+    private static predecessorDelegation;
+    /**
+     * Set the predecessorDelegation to change the method of calculating predecessors
+     * @param predecessorDelegation
+     */
+    static setPredecessorDelegation(predecessorDelegation: PredecessorDelegation): void;
+    /**
+     * To change method of calculating predecessors @see CommitPath.setPredecessorDelegation
+     * Performance optimizes wrapper call to CommitPath.getNPredecessors
+     * Returns up to n predecessors for each CommitPath of localities
+     * Returned array is in same order as localities and has same length. return[i] has the predecessor CommitPaths
+     * of localities[i].
+     * return[i] is null if upToN is false (exactly n predecessors should be returned) and there were less than n
+     * predecessors in allLocalities
+     * @param localities
+     * @param n
+     * @param upToN
+     * @param allLocalities
+     */
+    static getNPredecessorsMap(localities: CommitPath[], n: number, upToN: boolean, allLocalities: CommitPath[]): LocalityMap<CommitPath, CommitPath[]>;
+    /**
+     * To change method of calculating predecessors @see CommitPath.setPredecessorDelegation
+     * Returns up to n predecessor CommitPaths of locality. Predecessors match the path of locality
+     * Returns null on finding less than n predecessors if upToN is false
+     * Set initMode after first call to false to achieve performance optimization
+     * @param locality
+     * @param n
+     * @param upToN also return predecessors if less than n predecessors are found. False: return null if less than
+     *        n predecessors are found
+     * @param allLocalities
+     * @param initMode initializes map over allLocalities. If you want to call this function many times with same
+     *                 allLocalities you can set this to false after first call!
+     *                 This will achieve huge performance advantages.
+     */
+    static getNPredecessors(locality: CommitPath, n: number, upToN: boolean, allLocalities: CommitPath[], initMode: any): CommitPath[];
+    /**
+     * Returns the next predecessor CommitPath, returns null if all localities until minOrder were searched
+     * and no match was found
+     * @param path of the CommitPath of which the predecessor should be returned
+     * @param orderedLocalities a map of order (of all localities: CommitPath[]) to CommitPath[] with that order
+     * @param beginOrder order of the CommitPath of which the predecessor should be returned
+     * @param minOrder min order of allLocalities
+     * @param allLocalities
+     */
+    static getNextPredecessor(path: string, orderedLocalities: Map<number, CommitPath[]>, beginOrder: number, minOrder: number, allLocalities: CommitPath[]): CommitPath;
     /**
      * To achieve normalization und reduce redundancy commits
      * are stored static and received functional with getter method
@@ -32,42 +82,14 @@ export declare class CommitPath implements Locality {
      * Returns a map of commit.key to commits. Used to normalize CommitPaths and reduce redundancy.
      */
     static get commitMap(): Map<string, Commit>;
+    static removeFromMap(locality: CommitPath, map: Map<number, CommitPath[]>): void;
     /**
-     * Performance optimizes wrapper call to CommitPath.getNPredecessors
-     * Returns up to n predecessors for each CommitPath of localities
-     * Returned array is in same order as localities and has same length. return[i] has the predecessor CommitPaths
-     * of localities[i].
-     * return[i] is null if upToN is false (exactly n predecessors should be returned) and there were less than n
-     * predecessors in allLocalities
-     * @param localities
-     * @param n
-     * @param upToN
-     * @param allLocalities
-     */
-    static getNPredecessorsArray(localities: CommitPath[], n: number, upToN: boolean, allLocalities: CommitPath[]): Array<CommitPath[]>;
-    /**
-     * TODO: renaming of paths
-     * Returns up to n predecessor CommitPaths of locality. Predecessors match the path of locality
-     * Returns null on finding less than n predecessors if upToN is false
+     * Removing locality from array
      * @param locality
-     * @param n
-     * @param upToN also return predecessors if less than n predecessors are found. False: return null if less than
-     *        n predecessors are found
-     * @param allLocalities
-     * @param initMode initializes map over allLocalities. If you want to call this function many times with same
-     *          allLocalities you can set this to false after first call! This will achieve huge performance advantages
+     * @param array
+     * @private
      */
-    static getNPredecessors(locality: CommitPath, n: number, upToN: boolean, allLocalities: CommitPath[], initMode?: boolean): CommitPath[];
-    /**
-     * Returns the next predecessor CommitPath, returns null if all localities until minOrder were searched
-     * and no match was found
-     * @param path of the CommitPath of which the predecessor should be returned
-     * @param orderedLocalities a map of order (of all localities: CommitPath[]) to CommitPath[] with that order
-     * @param beginOrder order of the CommitPath of which the predecessor should be returned
-     * @param minOrder min order of allLocalities
-     * @param allLocalities
-     */
-    static getNextPredecessor(path: string, orderedLocalities: Map<number, CommitPath[]>, beginOrder: number, minOrder: number, allLocalities: CommitPath[]): CommitPath;
+    static removeFromCPArray(locality: CommitPath, array: CommitPath[]): CommitPath[];
     constructor(commit?: Commit, path?: GitFile);
     /**
      * Normalizes CommitPaths so that no duplicate Commits are stored.
