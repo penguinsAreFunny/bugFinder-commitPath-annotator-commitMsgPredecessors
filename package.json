@@ -41,6 +41,6 @@
     "bugfinder-commitpath-annotator-commitmsg": "^2.5.0",
     "bugfinder-framework": "^9.2.0",
     "bugfinder-localityrecorder-commit": "^2.1.0",
-    "bugfinder-localityrecorder-commitpath": "^1.15.0"
+    "bugfinder-localityrecorder-commitpath": "^1.17.0"
   }
 }
