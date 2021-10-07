@@ -1,3 +1,4 @@
-export const BUGFINDER_COMMITPATH_ANNOTATOR_COMMITMSG_TYPES = {
-    testFileMatcher: Symbol("TestFileMatcher")
+export const BUGFINDER_COMMITPATH_ANNOTATOR_COMMITMSGPREDECESSORS_TYPES = {
+    commitPathAnnotator: Symbol("CommitPathAnnotator"),
+    n: Symbol("N")
 }

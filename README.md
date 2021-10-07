@@ -53,7 +53,7 @@ import {
 import {CommitPath} from "bugfinder-localityrecorder-commitpath";
 import {BUGFINDER_DB_COMMITPATH_MONGODB_TYPES, CommitPathsMongoDB} from "bugfinder-commitpath-db-mongodb";
 import {
-    BUGFINDER_COMMITPATH_ANNOTATOR_COMMITMSG_TYPES, CommitPathsAnnotator,
+    BUGFINDER_COMMITPATH_ANNOTATOR_COMMITMSG_TYPES, CommitPathsPredecessorsAnnotator,
 } from "bugfinder-commitpath-annotator-commitmsg";
 import {annotatorContainer} from "bugfinder-framework-defaultContainer";
 
@@ -65,7 +65,7 @@ const mongoDBConfig: MongoDBConfig = {
 const testFileMatcher = /(test?\/.*\.*)/
 
 // binding Annotator and its dependencies
-container.bind<Annotator<CommitPath, number>>(ANNOTATOR_TYPES.annotator).to(CommitPathsAnnotator)
+container.bind<Annotator<CommitPath, number>>(ANNOTATOR_TYPES.annotator).to(CommitPathsPredecessorsAnnotator)
 container.bind<RegExp>(BUGFINDER_COMMITPATH_ANNOTATOR_COMMITMSG_TYPES.testFileMatcher).toConstantValue(testFileMatcher)
 
 // binding DB and its dependencies
