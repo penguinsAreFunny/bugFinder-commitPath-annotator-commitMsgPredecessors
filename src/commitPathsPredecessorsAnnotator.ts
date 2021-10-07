@@ -1,8 +1,7 @@
 import {inject, injectable, optional} from "inversify";
+import {BUGFINDER_COMMITPATH_ANNOTATOR_COMMITMSGPREDECESSORS_TYPES} from "./TYPES";
 import {Annotator, LocalityMap} from "bugfinder-framework";
 import {CommitPath, PredecessorsUnique} from "bugfinder-localityrecorder-commitpath";
-import {BUGFINDER_COMMITPATH_ANNOTATOR_COMMITMSGPREDECESSORS_TYPES} from "./TYPES";
-import _ from 'underscore';
 import {Logger} from "ts-log";
 
 @injectable()

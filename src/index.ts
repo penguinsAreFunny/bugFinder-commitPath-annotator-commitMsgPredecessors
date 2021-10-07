@@ -1,4 +1,4 @@
-import {BUGFINDER_LOCALITYRECORDER_COMMITPATH_TYPES} from "../../bugFinder-localityRecorder-commitPath/src";
+import {BUGFINDER_LOCALITYRECORDER_COMMITPATH_TYPES} from "bugfinder-localityrecorder-commitpath";
 import {FileAndConsoleLogger, LogConfig} from "bugfinder-framework";
 import {annotatorContainer} from "bugfinder-framework-defaultcontainer";
 import {Logger} from "ts-log";

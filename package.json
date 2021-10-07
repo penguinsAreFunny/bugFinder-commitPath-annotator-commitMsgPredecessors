@@ -35,7 +35,7 @@
     "rimraf": "^3.0.2",
     "source-map-support": "^0.5.19",
     "ts-log": "^2.2.3",
-    "typescript": "^4.3.2",
+    "typescript": "^4.4.3",
     "underscore": "^1.13.1"
   },
   "dependencies": {
