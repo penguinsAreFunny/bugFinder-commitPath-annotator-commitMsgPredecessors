@@ -2,7 +2,7 @@
   "name": "bugfinder-commitpath-annotator-commitmsgpredecessors",
   "version": "3.6.0",
   "description": "",
-  "main": "dist/bugFinder-commitPath-annotator-commitMsgPredecessors/index.js",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "npm run clean && tsc --project .",
