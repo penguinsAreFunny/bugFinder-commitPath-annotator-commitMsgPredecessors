@@ -31,31 +31,42 @@ than two files, is not a merge commit and commit does not affect test files.
 You need to begin with understanding the [bugfinder-framework](https://github.com/penguinsAreFunny/bugFinder-framework#readme)
 and installing it:
 1. 
-        npm i bugfinder-framework
+    ```npm i bugfinder-framework```
 
  
     
 # Usage
+This package is not intended to be used independently, but feel free to do so. Instead of Dependency Injection you can
+just create instances of the Annotator with ```new CommitPathsPredecessorsAnnotator(...)```.
+
+The following example read CommitPaths from a MongoDB and annotates them with consideration of up to 5 predecessor
+CommitPaths
+1. ```    
+    npm i -D bugfinder-commitpath-annotator-commitmsgpredecessors
     npm i -D bugfinder-commitpath-annotator-commitmsg
-    
-This package is not intended to be used independently, but feel free to do so.
-Here is an example quantifying TypeScript-Files of npm projects. Reading and writing localities from a
-MongoDB. You can create your localities with [bugfinder-localityrecorder-commitpath](https://www.npmjs.com/package/bugfinder-localityrecorder-commitpath).
+    npm i -D bugfinder-commitpath-db-mongodb
+    ```
+2. [MongoDB-Prerequisites](https://www.npmjs.com/package/bugfinder-commitpath-db-mongodb)
+3. You can create your localities with [bugfinder-localityrecorder-commitpath](https://www.npmjs.com/package/bugfinder-localityrecorder-commitpath).
+
 inversify.config.ts
-```
-import {MongoDBConfig} from "bugfinder-commit-db-mongodb";
+```typescript
 import {
     AnnotationFactory,
     Annotator,
     ANNOTATOR_TYPES,
     DB,
 } from "bugfinder-framework";
+import {MongoDBConfig} from "bugfinder-commit-db-mongodb";
 import {CommitPath} from "bugfinder-localityrecorder-commitpath";
 import {BUGFINDER_DB_COMMITPATH_MONGODB_TYPES, CommitPathsMongoDB} from "bugfinder-commitpath-db-mongodb";
 import {
-    BUGFINDER_COMMITPATH_ANNOTATOR_COMMITMSG_TYPES, CommitPathsPredecessorsAnnotator,
+    BUGFINDER_COMMITPATH_ANNOTATOR_COMMITMSG_TYPES, CommitPathsAnnotator,
 } from "bugfinder-commitpath-annotator-commitmsg";
 import {annotatorContainer} from "bugfinder-framework-defaultContainer";
+import {CommitPathsPredecessorsAnnotator} from "bugfinder-commitpath-annotator-commitmsgpredecessors";
+import {BUGFINDER_COMMITPATH_ANNOTATOR_COMMITMSGPREDECESSORS_TYPES}
+    from "bugfinder-commitpath-annotator-commitmsgpredecessors";
 
 const container = annotatorContainer;
 const mongoDBConfig: MongoDBConfig = {
@@ -66,6 +77,10 @@ const testFileMatcher = /(test?\/.*\.*)/
 
 // binding Annotator and its dependencies
 container.bind<Annotator<CommitPath, number>>(ANNOTATOR_TYPES.annotator).to(CommitPathsPredecessorsAnnotator)
+container.bind<number>(BUGFINDER_COMMITPATH_ANNOTATOR_COMMITMSGPREDECESSORS_TYPES.n).toConstantValue(5)
+container.bind<boolean>(BUGFINDER_COMMITPATH_ANNOTATOR_COMMITMSGPREDECESSORS_TYPES.upToN).toConstantValue(true)
+container.bind<Annotator<CommitPath, number>>(
+    BUGFINDER_COMMITPATH_ANNOTATOR_COMMITMSGPREDECESSORS_TYPES.commitPathAnnotator).to(CommitPathsAnnotator)
 container.bind<RegExp>(BUGFINDER_COMMITPATH_ANNOTATOR_COMMITMSG_TYPES.testFileMatcher).toConstantValue(testFileMatcher)
 
 // binding DB and its dependencies
@@ -79,7 +94,7 @@ container.bind<AnnotationFactory<CommitPath, number>>(ANNOTATOR_TYPES.annotation
 export {container};
 ```
 main.ts
-```
+```typescript
 import "reflect-metadata";
 import {container} from "./inversify.config"
 import {

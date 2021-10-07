@@ -1,7 +1,9 @@
-import {inject, injectable} from "inversify";
+import {inject, injectable, optional} from "inversify";
 import {Annotator, LocalityMap} from "bugfinder-framework";
 import {CommitPath} from "bugfinder-localityrecorder-commitpath";
 import {BUGFINDER_COMMITPATH_ANNOTATOR_COMMITMSGPREDECESSORS_TYPES} from "./TYPES";
+import _ from 'underscore';
+import {Logger} from "ts-log";
 
 @injectable()
 export class CommitPathsPredecessorsAnnotator implements Annotator<CommitPath, number> {
@@ -13,6 +15,9 @@ export class CommitPathsPredecessorsAnnotator implements Annotator<CommitPath, n
 
     @inject(BUGFINDER_COMMITPATH_ANNOTATOR_COMMITMSGPREDECESSORS_TYPES.upToN)
     upToN: boolean
+
+    @optional() @inject(BUGFINDER_COMMITPATH_ANNOTATOR_COMMITMSGPREDECESSORS_TYPES.logger)
+    logger: Logger
 
     /**
      * If upToN ist true the return value does not annotate localities which have less than n predecessors
@@ -34,8 +39,11 @@ export class CommitPathsPredecessorsAnnotator implements Annotator<CommitPath, n
             if (nPredecessors == null)
                 continue
 
+            const localitiesToConsider = [...nPredecessors, loc]
+
+
             // annotations of nPredecessors
-            const annotations = this.commitPathAnnotator.annotate(nPredecessors)
+            const annotations = this.commitPathAnnotator.annotate(localitiesToConsider)
 
             // sum of all annotations of the nPredecessors
             const annotation = annotations.toArray()
@@ -48,6 +56,14 @@ export class CommitPathsPredecessorsAnnotator implements Annotator<CommitPath, n
 
             map.set(loc, annotation)
         }
+
+        const annoValues = map.toArray().map(el => {
+            return el.val
+        })
+
+        this.logger?.info("Annotation count: ", _.countBy(annoValues, (num) => {
+            return num
+        }))
 
         return map;
     }
