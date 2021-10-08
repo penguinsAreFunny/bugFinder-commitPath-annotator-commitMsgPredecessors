@@ -8,7 +8,7 @@ export declare class CommitPathsPredecessorsAnnotator implements Annotator<Commi
     uniqueMode: boolean;
     logger: Logger;
     /**
-     * If upToN ist true the return value does not annotate localities which have less than n predecessors
+     * If upToN is false the return value does not annotate localities which have less than n predecessors
      * Therefore the return value has undefined values for these localities
      * @param localitiesToAnnotate
      * @param allLocalities
