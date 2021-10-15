@@ -1,6 +1,6 @@
 import {inject, injectable, optional} from "inversify";
 import {BUGFINDER_COMMITPATH_ANNOTATOR_COMMITMSGPREDECESSORS_TYPES} from "./TYPES";
-import {Annotator, LocalityMap} from "bugfinder-framework";
+import {Annotator, LocalityMap, SHARED_TYPES} from "bugfinder-framework";
 import {CommitPath, PredecessorsUnique} from "bugfinder-localityrecorder-commitpath";
 import {Logger} from "ts-log";
 import _ from "underscore"
@@ -19,7 +19,7 @@ export class CommitPathsPredecessorsAnnotator implements Annotator<CommitPath, n
     @inject(BUGFINDER_COMMITPATH_ANNOTATOR_COMMITMSGPREDECESSORS_TYPES.uniqueMode)
     uniqueMode: boolean
 
-    @optional() @inject(BUGFINDER_COMMITPATH_ANNOTATOR_COMMITMSGPREDECESSORS_TYPES.logger)
+    @optional() @inject(SHARED_TYPES.logger)
     logger: Logger
 
     /**
