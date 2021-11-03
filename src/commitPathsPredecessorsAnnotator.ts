@@ -28,7 +28,9 @@ export class CommitPathsPredecessorsAnnotator implements Annotator<CommitPath, n
      * @param localitiesToAnnotate
      * @param allLocalities
      */
-    annotate(localitiesToAnnotate: CommitPath[], allLocalities: CommitPath[]): LocalityMap<CommitPath, number> {
+    async annotate(localitiesToAnnotate: CommitPath[], allLocalities: CommitPath[]):
+        Promise<LocalityMap<CommitPath, number>> {
+
         const map = new LocalityMap<CommitPath, number>()
 
         if (this.uniqueMode) {
@@ -36,7 +38,7 @@ export class CommitPathsPredecessorsAnnotator implements Annotator<CommitPath, n
         }
 
         const nPredecessorsMap: LocalityMap<CommitPath, CommitPath[]> =
-            CommitPath.getNPredecessorsMap(localitiesToAnnotate, this.n, this.upToN, allLocalities)
+            CommitPath.getNPredecessorsMap(localitiesToAnnotate, this.n, this.upToN, this.uniqueMode, allLocalities)
 
         for (let i = 0; i < localitiesToAnnotate.length; i++) {
             const loc = localitiesToAnnotate[i]
@@ -47,7 +49,7 @@ export class CommitPathsPredecessorsAnnotator implements Annotator<CommitPath, n
                 continue
 
             // annotations of nPredecessors
-            const annotations = this.commitPathAnnotator.annotate(nPredecessors)
+            const annotations = await this.commitPathAnnotator.annotate(nPredecessors)
 
             // sum of all annotations of the nPredecessors
             const annotation = annotations.toArray()
