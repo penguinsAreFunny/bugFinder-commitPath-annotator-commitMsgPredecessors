@@ -13,5 +13,5 @@ export declare class CommitPathsPredecessorsAnnotator implements Annotator<Commi
      * @param localitiesToAnnotate
      * @param allLocalities
      */
-    annotate(localitiesToAnnotate: CommitPath[], allLocalities: CommitPath[]): LocalityMap<CommitPath, number>;
+    annotate(localitiesToAnnotate: CommitPath[], allLocalities: CommitPath[]): Promise<LocalityMap<CommitPath, number>>;
 }
